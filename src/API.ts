@@ -30,3 +30,9 @@ export const fetchQuizQuestions = async (
     ]),
   }));
 };
+
+export const fetchCategory = async () => {
+  const endpoint = "https://opentdb.com/api_category.php";
+  const data = await (await fetch(endpoint)).json();
+  return data.trivia_categories;
+};
