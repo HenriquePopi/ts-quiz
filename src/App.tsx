@@ -1,6 +1,6 @@
 import React from "react";
 import { fetchQuizQuestions, Difficulty, QuestionState } from "./API";
-
+import DificultySelector from "./Components/DificultySelector";
 //Components
 import QuestionCard from "./Components/QuestionCard";
 import CategorySelector from "./Components/CategorySelector";
@@ -22,11 +22,19 @@ function App() {
   const [userAnswers, setUserAnswers] = React.useState<AnswerObject[]>([]);
   const [score, setScore] = React.useState(0);
   const [gameOver, setGameOver] = React.useState(true);
+  const [selectedCategory, setSelectedCategory] = React.useState(10);
+  const [dificulty, setDificuty] = React.useState(Difficulty.EASY);
   const startTrivia = async () => {
     setLoading(true);
     setGameOver(false);
 
-    setQuestions(await fetchQuizQuestions(TORAL_QUESTIONS, Difficulty.HARD));
+    setQuestions(
+      await fetchQuizQuestions(
+        TORAL_QUESTIONS,
+        dificulty,
+        selectedCategory.toString()
+      )
+    );
     setScore(0);
     setUserAnswers([]);
     setNumber(0);
@@ -50,7 +58,7 @@ function App() {
   return (
     <>
       <GlobalStyle />
-      <CategorySelector />
+
       <Wrapper>
         <h1>Quiz</h1>
         {gameOver || userAnswers.length === TORAL_QUESTIONS ? (
@@ -58,6 +66,7 @@ function App() {
             Start
           </button>
         ) : null}
+
         {!gameOver && <p className="score">Score : {score}</p>}
         {loading && <p>Loading Questions...</p>}
         {questions.length && !gameOver && (
@@ -69,6 +78,14 @@ function App() {
             userAnswer={userAnswers ? userAnswers[number] : undefined}
             callback={checkAnswer}
           />
+        )}
+        {gameOver && (
+          <>
+            <DificultySelector />
+            <div style={{ position: "relative" }}>
+              <CategorySelector callBack={(id) => setSelectedCategory(id)} />
+            </div>
+          </>
         )}
 
         {!gameOver &&

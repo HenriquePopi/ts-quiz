@@ -3,21 +3,42 @@ import { fetchCategory } from "../API";
 //style
 import { Selection } from "./CategorySelector.styles";
 
-const CategorySelector: React.FC = () => {
-  const [categorys, setCategorys] = React.useState([]);
+type CategoryType = { name: string; id: number };
+type Props = {
+  callBack: (id: number) => any;
+};
+const CategorySelector: React.FC<Props> = ({ callBack }) => {
+  const [categorys, setCategorys] = React.useState([
+    { id: 10, name: "Any Category" },
+  ]);
+  const [isOpen, setIsOpen] = React.useState(false);
 
   React.useEffect(() => {
-    const getCategorys = async () => setCategorys(await fetchCategory());
+    const getCategorys = async () => {
+      const categorys = await fetchCategory();
+      setCategorys((value) => [...value, ...categorys]);
+    };
     getCategorys();
   }, []);
 
+  const setCategoryView = (selectedCategory: CategoryType) => {
+    setCategorys([
+      selectedCategory,
+      ...categorys.filter((category) => category.id !== selectedCategory.id),
+    ]);
+  };
   return (
-    <Selection>
-      <li>Any Category</li>
-
+    <Selection open={isOpen} onClick={() => setIsOpen((v) => !v)}>
       {categorys.length &&
         categorys.map(({ id, name }) => (
-          <li value={id} key={id}>
+          <li
+            value={id}
+            key={name}
+            onClick={() => {
+              callBack(id);
+              setCategoryView({ id, name });
+            }}
+          >
             {name}
           </li>
         ))}
