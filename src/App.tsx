@@ -3,6 +3,7 @@ import { fetchQuizQuestions, Difficulty, QuestionState } from "./API";
 
 //Components
 import QuestionCard from "./Components/QuestionCard";
+import CategorySelector from "./Components/CategorySelector";
 
 import { GlobalStyle, Wrapper } from "./App.styles";
 const TORAL_QUESTIONS = 10;
@@ -30,9 +31,7 @@ function App() {
     setUserAnswers([]);
     setNumber(0);
     setLoading(false);
-    console.log(questions);
   };
-
   const checkAnswer = (e: React.MouseEvent<HTMLButtonElement>) => {
     const answer = e.currentTarget.value;
     const correct = questions[number].correct_answer === answer;
@@ -51,6 +50,7 @@ function App() {
   return (
     <>
       <GlobalStyle />
+      <CategorySelector />
       <Wrapper>
         <h1>Quiz</h1>
         {gameOver || userAnswers.length === TORAL_QUESTIONS ? (
