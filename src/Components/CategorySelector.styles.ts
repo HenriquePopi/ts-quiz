@@ -39,3 +39,9 @@ export const Selection = styled.ul<SelectionProps>`
     }
   }
 `;
+
+export const SelectionWrappert = styled.div`
+  position: relative;
+  margin-left: -320px;
+  height: 300px;
+`;

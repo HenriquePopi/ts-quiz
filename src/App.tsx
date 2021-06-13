@@ -23,7 +23,7 @@ function App() {
   const [score, setScore] = React.useState(0);
   const [gameOver, setGameOver] = React.useState(true);
   const [selectedCategory, setSelectedCategory] = React.useState(10);
-  const [dificulty, setDificuty] = React.useState(Difficulty.EASY);
+  const [dificulty, setDificuty] = React.useState("Difficulty.EASY");
   const startTrivia = async () => {
     setLoading(true);
     setGameOver(false);
@@ -61,11 +61,6 @@ function App() {
 
       <Wrapper>
         <h1>Quiz</h1>
-        {gameOver || userAnswers.length === TORAL_QUESTIONS ? (
-          <button className="start" onClick={startTrivia}>
-            Start
-          </button>
-        ) : null}
 
         {!gameOver && <p className="score">Score : {score}</p>}
         {loading && <p>Loading Questions...</p>}
@@ -81,13 +76,16 @@ function App() {
         )}
         {gameOver && (
           <>
-            <DificultySelector />
-            <div style={{ position: "relative" }}>
-              <CategorySelector callBack={(id) => setSelectedCategory(id)} />
-            </div>
+            <DificultySelector callBack={setDificuty} selected={dificulty} />
+
+            <CategorySelector callBack={(id) => setSelectedCategory(id)} />
           </>
         )}
-
+        {gameOver || userAnswers.length === TORAL_QUESTIONS ? (
+          <button className="start" onClick={startTrivia}>
+            Start
+          </button>
+        ) : null}
         {!gameOver &&
           !loading &&
           userAnswers.length === number + 1 &&
