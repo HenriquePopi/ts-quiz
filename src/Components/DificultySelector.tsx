@@ -1,14 +1,18 @@
 import React from "react";
-import { Difficulty } from "../API";
 import styled from "styled-components";
 
-const Wrapper = styled.div`
+type WrapperProps = {
+  dificulty?: string;
+};
+const Wrapper = styled.div<WrapperProps>`
   display: flex;
   justify-content: center;
-  label {
+  button {
+    transition: 0.2s;
     display: flex;
     flex-direction: column;
     width: 90px;
+    margin: 10px;
     align-items: center;
     text-align: center;
     font-family: Fascinate Impact, Haettenschweiler, "Arial Narrow Bold",
@@ -21,23 +25,34 @@ const Wrapper = styled.div`
     -moz-background-clip: text;
     -moz-text-fill-color: transparent;
     font-size: 20px;
+    border: none;
+    cursor: pointer;
+  }
+
+  button:nth-child(1) {
+    transform: ${(props) =>
+      props.dificulty == "easy" ? "scale(1.6)" : "none"};
+  }
+  button:nth-child(2) {
+    transform: ${(props) =>
+      props.dificulty == "medium" ? "scale(1.6)" : "none"};
+  }
+  button:nth-child(3) {
+    transform: ${(props) =>
+      props.dificulty == "hard" ? "scale(1.6)" : "none"};
   }
 `;
-const DificultySelector: React.FC = () => {
+type Props = {
+  callBack: (dificulty: string) => void;
+  selected: string;
+};
+
+const DificultySelector: React.FC<Props> = ({ callBack, selected }) => {
   return (
-    <Wrapper>
-      <label>
-        Easy
-        <input type="radio" name="dificulty" value={Difficulty.EASY} />
-      </label>
-      <label>
-        Medium
-        <input type="radio" name="dificulty" value={Difficulty.MEDIUM} />
-      </label>
-      <label>
-        Hard
-        <input type="radio" name="dificulty" value={Difficulty.HARD} />
-      </label>
+    <Wrapper dificulty={selected}>
+      <button onClick={() => callBack("easy")}>Easy</button>
+      <button onClick={() => callBack("medium")}>Medium</button>
+      <button onClick={() => callBack("hard")}>Hard</button>
     </Wrapper>
   );
 };

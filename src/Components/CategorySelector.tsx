@@ -1,7 +1,7 @@
 import React from "react";
 import { fetchCategory } from "../API";
 //style
-import { Selection } from "./CategorySelector.styles";
+import { Selection, SelectionWrappert } from "./CategorySelector.styles";
 
 type CategoryType = { name: string; id: number };
 type Props = {
@@ -28,21 +28,23 @@ const CategorySelector: React.FC<Props> = ({ callBack }) => {
     ]);
   };
   return (
-    <Selection open={isOpen} onClick={() => setIsOpen((v) => !v)}>
-      {categorys.length &&
-        categorys.map(({ id, name }) => (
-          <li
-            value={id}
-            key={name}
-            onClick={() => {
-              callBack(id);
-              setCategoryView({ id, name });
-            }}
-          >
-            {name}
-          </li>
-        ))}
-    </Selection>
+    <SelectionWrappert>
+      <Selection open={isOpen} onClick={() => setIsOpen((v) => !v)}>
+        {categorys.length &&
+          categorys.map(({ id, name }) => (
+            <li
+              value={id}
+              key={name}
+              onClick={() => {
+                callBack(id);
+                setCategoryView({ id, name });
+              }}
+            >
+              {name}
+            </li>
+          ))}
+      </Selection>
+    </SelectionWrappert>
   );
 };
 
