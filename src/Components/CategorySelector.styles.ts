@@ -1,8 +1,11 @@
 import styled from "styled-components";
 
-export const Selection = styled.ul`
+type SelectionProps = {
+  open: boolean;
+};
+export const Selection = styled.ul<SelectionProps>`
   min-width: 300px;
-  height: 35px;
+  height: ${(props) => (props.open ? "300px" : "35px")};
   margin: 20px;
   padding: 0;
   background: none;
@@ -11,12 +14,28 @@ export const Selection = styled.ul`
   font-weight: bold;
   list-style: none;
   transition: all 150ms ease;
-  overflow-y: scroll;
+  overflow-y: ${(props) => (props.open ? "scroll" : "hidden")};
+  position: absolute;
+  ::-webkit-scrollbar {
+    width: 12px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #ffda6d;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
+    border: 1px solid black;
+  }
+
   li {
     padding: 3px;
     :hover {
       background: rgba(189, 43, 26, 0.6);
       border-radius: 5px;
+      cursor: pointer;
     }
   }
 `;
